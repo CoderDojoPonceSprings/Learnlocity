@@ -82,6 +82,7 @@ app.get('/authenticate/:code', function(req, res) {
 
 app.use(express.static(__dirname + '/public'));
 
+/*
 mongo.connect("mongodb://localhost:27017/learnlocity", function(err, db) {
   msgs = db.collection('msg');
 
@@ -152,6 +153,7 @@ mongo.connect("mongodb://localhost:27017/learnlocity", function(err, db) {
     });    
   }); 
 });
+*/
 
 var port = process.env.PORT || config.port || 80;
 
