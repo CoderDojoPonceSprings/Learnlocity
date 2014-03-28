@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>CoderDojo Ponce Springs - Tic Tac Toe Tutorial</title>
+		<title>CoderDojo Ponce Springs - Learnlocity!</title>
 		<meta name='viewport' content='width=device-width, initial-scale=1.0'>
 	    <link rel='stylesheet' href='lib/bootstrap/css/bootstrap.min.css' />
 	    <link rel='stylesheet' href='//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css' />
@@ -408,18 +408,6 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 
 	// Set up socket to listen for mission.join and mission.leave events
 	$scope.socket = io.connect('');
-
-	/*
-		if (msg.type == 'mission.join') {
-			var mission = $scope.missionsByHref[msg.mission];
-			$scope.$apply(function() {
-				if (mission) mission.peers.push(msg);
-			});
-		} else if (msg.type == 'mission.leave') {
-			console.log(msg.userName);
-			console.log(msg.avatar_url);
-		}	
-	*/
 
 	$rootScope.questList();
 });
