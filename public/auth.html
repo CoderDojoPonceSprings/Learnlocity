@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Log In with GitHub</title>
+		<meta name='viewport' content='width=device-width, initial-scale=1.0' />
+	    <link rel='stylesheet' href='lib/bootstrap/css/bootstrap.min.css' />
+	    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet" />
+		<script>
+			function getParameterByName(name) {
+			    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+			    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+			        results = regex.exec(location.search);
+			    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+			}
+			var code = getParameterByName("code");
+
+			if (code == "") {
+            	window.location.href = "https://github.com/login/oauth/authorize?client_id=30e4e6a967f592886b8f&scope=user,repo,delete_repo";
+            } else {
+		      if (window.opener) {
+		      	window.opener.handleGitHubLoginSuccess(code);
+		      }
+		      window.close();
+            }
+        </script>
+        <style>
+body {
+	text-align: center;
+}        
+        </style>		
+	</head>
+	<body>
+		<h1>Signing you in with GitHub!</h1>
+		<p>
+			<i class="fa fa-github-alt fa-5x"></i>
+		</p>
+	</body>
+</html>

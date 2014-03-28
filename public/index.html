@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>CoderDojo Ponce Springs - Tic Tac Toe Tutorial</title>
+		<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+	    <link rel='stylesheet' href='lib/bootstrap/css/bootstrap.min.css' />
+	    <link rel='stylesheet' href='//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css' />
+	    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+	    <link href='css/indexa.css' rel='stylesheet' media='screen' />
+		<link href='css/snap.css' rel='stylesheet' />
+		<link href='css/angular-snap.css' rel='stylesheet' />
+	    <style>
+body {
+	margin: 0;
+	padding: 0 !important;
+}
+
+iframe {
+  background: white;
+  height: 300px;
+}
+
+.editor {
+  border: 1px solid darkgray;
+  background: black;
+  color: white;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.ace_wrapper {  
+}
+
+.ace_editor {
+  height: inherit;
+}
+
+.html {
+  background: yellow;
+}
+
+.css {
+  background: orange;
+}
+
+.js {
+  background: dodgerblue;
+}
+
+.modal {
+  display: block;
+  height: 0;
+  overflow: visible;
+}
+
+.hide {
+    display: none;
+}
+
+.navbar {
+	margin-bottom: 0 !important;
+}
+
+.fill {
+	min-height: 100%;
+	height: 100%;
+}
+    	</style>
+		<script src='lib/jquery/jquery-1.11.0.min.js'></script>	
+		<script src='//code.jquery.com/ui/1.10.4/jquery-ui.js'></script>
+		<script src='lib/angular/angular.min.js'></script>
+		<script src='lib/angular/angular-resource.min.js'></script>
+		<script src='lib/angular-bootstrap/js/ui-bootstrap-tpls-0.10.0.min.js'></script>
+		<script src='lib/bootstrap/js/bootstrap.min.js'></script>
+		<script src="lib/ace/ace.js" charset="utf-8"></script>
+		<script src="lib/ui-ace/ui-ace.js"></script>
+		<script src="lib/snap.js"></script>
+		<script src="lib/angular-snap.js"></script>
+		<script src="lib/underscore/underscore.min.js"></script>
+		<script src="lib/github/github.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+	</head>
+	<body class='container-fluid center' ng-cloak ng-controller='tutorialController'>
+		<snap-drawer>
+			<div class='container-fluid center fill' style='background: palegreen'>
+				<ul class="nav nav-pills nav-stacked" ng-controller='identityController'>
+					<li ng-show='!userLoggedIn'><a class='btn btn-primary' ng-click='signInWithGitHub()'><i class="fa fa-github-alt"></i> Sign In with GitHub</a></li>
+					<!--
+					<li ng-show='!userLoggedIn'><a class='btn btn-success' href="#" ng-click='showIdentifyUserDialog()'><strong>Log In or Register</strong>&nbsp;<i class='glyphicon glyphicon-user'></i></a></li> -->
+					<li ng-show='userLoggedIn'><a class='btn btn-success' style='background: darkblue' href="#"><img ng-src="{{avatar_url.src}}" height='18' width='18' />&nbsp;<strong>Welcome, {{userName}}!</strong></a></li>					
+				</ul>				
+				<h3 style='text-align:center'><i class='glyphicon glyphicon-flag'></i>&nbsp;Your Quest:</h3>
+				<div class='alert alert-warning' ng-if='stepsCode.length == 0'>You haven't selected a quest yet. Pick one from the right first!</div>
+				<div class='panel panel-primary' ng-if='stepsCode.length > 0'>
+					<div class='panel-heading'><h4>{{quest.title}}</h4></div>
+					<div class='panel-body'>						
+						<div style='text-align:center'><small><strong>{{questMissionsComplete}} of {{questMissionsTotal}} Missions completed</strong></small></div>
+						<progressbar animate="false" value="questPercentComplete()" type="success" style="text-align:center"><b style='padding-left:3px;padding-right:3px;'>{{questPercentComplete()}}%</b></progressbar>						
+						<tabset>
+							<tab heading="Brief">
+								<div style='padding-top: 5px'>{{quest.description}}
+								</div>
+							</tab>
+							<tab heading="Missions">
+								<div style='padding-top:5px'>
+									<accordion close-others="true">	
+										<accordion-group is-open='false' ng-repeat='mission in missions'>
+											<accordion-heading>
+										        <i class="pull-right glyphicon glyphicon-chevron-right"></i> {{mission.title}}
+										    </accordion-heading>
+										  	{{mission.description}}
+										  	<br />
+											<button class='btn btn-success btn-mini' ng-click='stepLoad(mission.href)'>Load Mission <i class='glyphicon glyphicon-play'></i></button>
+										</accordion-group>
+									</accordion>
+								</div>
+							</tab>
+						</tabset>
+					</div>
+				</div>
+			</div>			
+		</snap-drawer>
+		<div snap-content snap-options="{disable:left}">
+			<nav class="navbar navbar-default" role="navigation">
+			  <a href="#" class="navbar-brand" style='background: lightblue;' snap-toggle='left'><span ng-show='menuVisible'>&nbsp;</span><strong>Menu</strong>&nbsp;<i class='glyphicon glyphicon-transfer'></i></a><span class='navbar-brand'><i class='glyphicon glyphicon-signal'></i> <strong>Learnlocity</strong>: <em>build your brain velocity!</em></span>
+			</nav>		
+		    <div class='container-fluid fill' id='mainPanel' style='background:white'>
+		    	<div class='row-fluid'>
+					<div class="jumbotron" ng-show='homeVisible'>
+						<h1>Welcome to Learnlocity!</h1>
+						<p>Take a quest with your friends to build your brain's learning velocity!</p>
+						<h2>Available Quests:</h2>
+						<div class='container-fluid'>
+							<div class="row-fluid">
+							  	<div class="col-sm-6 col-md-4" ng-repeat='quest in quests'>
+							    	<div class="thumbnail">
+							      		<div class="caption" style='text-align:center' ng-init='briefingVisible=false'>
+											<h3>{{quest.title}}</h3>
+											<img src="{{quest.img}}" alt="{{quest.title}}" />
+											<p style='margin-top:5px'>
+									      		<a href='#' role='button' class='btn btn-success' ng-click='questLoad(quest.href)'>
+									      			<i class='glyphicon glyphicon-flag'></i>&nbsp;Start Quest Missions</a><strong>&nbsp;or&nbsp;</strong><a class='btn btn-primary' href='#' role='button' ng-click='briefingVisible=!briefingVisible' ng-show='!briefingVisible'>
+									      		<i class='glyphicon glyphicon-eye-open'></i>&nbsp;See Quest Briefing</a>
+												<a class='btn btn-primary' href='#' role='button' ng-click='briefingVisible=!briefingVisible' ng-show='briefingVisible'>
+									      		<i class='glyphicon glyphicon-eye-close'></i>&nbsp;Hide Quest Briefing</a>									      		
+								      		</p>
+								      		<p style='text-align:left;' class='well well-small' ng-show='briefingVisible'>
+								      			{{quest.description}}
+								      			<br />
+												<a href='#' role='button' class='btn btn-success' ng-click='questLoad(quest.href)'>Let's Go!</a>
+											</p>    
+							      		</div>
+							    	</div>
+							  	</div>
+							</div>
+						</div>
+					</div>
+					<div ng-show='!homeVisible'>
+						<div ng-repeat='stepCode in stepsCode'>
+							<div ng-init='code=stepCode'>
+								<div style='margin-bottom:4px; font-size:125%;'>
+									<strong>Current Mission:</strong>&nbsp;{{mission.title}}&nbsp;
+									<span style='padding:3px;'>
+										<strong>Mission Team:</strong>&nbsp;
+										<div class='btn-group' ng-repeat='peer in mission.peers'>
+											<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+												<!-- TODO: remove dumb hard coded avatar -->
+												<img ng-src='{{peer.avatar_url}}' src='https://avatars.githubusercontent.com/u/7043781?s=18' alt='{{peer.userName}}' width='18' height='18' />&nbsp;<span class="caret"></span>
+											</button>
+											<ul class="dropdown-menu" role="menu">
+												<li><a href="#" ng-click='load(peer.userName)'><i class='glyphicon glyphicon-search'></i>&nbsp;Code Spyglass</a></li>												
+												<li class="divider"></li>
+												<li><a href="#"><i class="fa fa-thumbs-o-up"></i>&nbsp;Give Props</a></li>
+											</ul>
+										</div>
+									</span>
+								</div>
+								<div ng-include="'partials/learnlocity.editor.editor.html'" ng-controller='editorController'></div>
+							</div>
+						</div>
+			    	</div>
+				</div>
+			</div>	
+		</div>
+	</body>
+	<script>
+var MISSIONUPDATE_INTERVAL = 5000;
+
+var learnlocity = angular.module('learnlocity',['snap', 'learnlocity.identity', 'learnlocity.editor', 'ui.bootstrap']);
+learnlocity.run(function($rootScope) {
+	$rootScope.peersVisible = false;
+});
+
+learnlocity.controller('tutorialController', function($rootScope, $scope, $http, $sce, $interval) {
+	$scope.userLoggedIn = false;
+	$scope.homeVisible = true;
+	$scope.questMissionsComplete = 0;
+	$scope.questMissionsTotal = 0;
+	$scope.questPercentComplete = function() {
+		var pc = Math.floor(100 * ($scope.questMissionsComplete / $scope.questMissionsTotal));
+		return pc;
+	};
+
+	$scope.getTutorialClass = function() {
+		if ($rootScope.peersVisible === undefined) return 'span7';
+		if ($rootScope.peersVisible) return 'span7';
+		return 'span12';
+	};
+	$rootScope.notMine = function(code) {
+		return function(item) {
+			return item.id != "__YOURS__";
+		};
+	};	
+
+	function initializeCode() {
+		$rootScope.peersCode = [];
+	  	$rootScope.stepsCode = [];
+  	}
+
+  	initializeCode();
+
+	var questsByName = {};
+
+	$rootScope.questList = function() {
+		$rootScope.quests = [];
+		$http.get("quests/index.html").success(function(data) {
+			var questListDoc = new DOMParser().parseFromString(data, "text/html");
+			var questLinks = questListDoc.querySelectorAll('nav>ul>li>a');			
+			for(var i = 0; i < questLinks.length; i++) {
+				var link = questLinks[i];
+				var href = link.attributes['href'].value;
+				$http.get('quests/' + href).success(function(data) {
+					var quest = new DOMParser().parseFromString(data, "text/html");
+					var questRootLink = quest.querySelectorAll('link')[0].attributes["href"].value;					
+					var questImgLink = 'quests/' + questRootLink + '/' + quest.querySelectorAll('img')[0].attributes["src"].value;
+					var questTitle = quest.querySelectorAll("section")[0].textContent;
+					var questDescription = quest.querySelectorAll("article")[0].textContent;
+					var questInfo = { href: questRootLink, title: questTitle, description: questDescription, img: questImgLink };
+					$rootScope.quests.push(questInfo);
+					questsByName[questRootLink] = questInfo;
+				});
+			}
+		});
+	};
+
+	$rootScope.missionsByHref = {};
+
+	$rootScope.questLoad = function(questName) {
+		$rootScope.quest = questsByName[questName];
+		var rootUrl = "quests/" + questName + "/";
+		$http.get(rootUrl + "quest.html").success(function(data) {
+			var quest = new DOMParser().parseFromString(data, "text/html");
+			var missionLinks = quest.querySelectorAll('nav>ul>li');			
+			var missions = [];
+			$scope.questMissionsComplete = 0;
+			$scope.questMissionsTotal = missionLinks.length;
+			for(var i = 0; i < missionLinks.length; i++) {
+				var missionLink = missionLinks[i];
+				var href = missionLink.querySelectorAll('[href]')[0].attributes["href"].value;
+				var mission = {
+					title: missionLink.textContent,
+					description: missionLink.textContent,
+					href: rootUrl + href,
+					peers:[]
+				};				
+				missions.push(mission);
+				console.log('Adding mission:');
+				console.log(mission.href);
+				$rootScope.missionsByHref[mission.href] = mission;
+			}
+			$rootScope.missions = missions;
+			$rootScope.stepLoad(missions[0].href);
+		});
+	};
+
+	$rootScope.stepLoad = function(missionHref) {
+		$scope.homeVisible = false;
+
+		function missionLeave(missionLeaving) {
+			$scope.socket.emit("msg", {
+				"type":"mission.leave",
+				"userName":$rootScope.gitHubUserName,
+				"mission":missionLeaving,
+				"missionEntering":missionHref
+			});
+		}		
+
+		if (angular.isDefined($scope.mission)) {
+			missionLeave($scope.mission.href);
+		}
+
+		function missionJoin() {
+			$scope.socket.emit("msg", {
+				"type":"mission.join", 
+				"userName":$rootScope.gitHubUserName,
+				"avatar_url":$rootScope.avatar_url.src,
+				"mission":missionHref
+			});
+		}
+
+		$http.get(missionHref).success(function(data) {
+			initializeCode();
+			var xml = new DOMParser().parseFromString(data, "application/xml");
+			var name = xml.getElementsByTagName('title')[0].textContent;
+			var id = xml.getElementsByTagName('id')[0].textContent;
+			var story = xml.getElementsByTagName('section')[0].textContent;
+			var html = xml.getElementsByTagName('section')[1].textContent;		
+			var js = xml.getElementsByTagName('script')[0].textContent;
+			var css = xml.getElementsByTagName('style')[0].textContent;
+
+			var item = {
+				name: name,
+				id: id,
+				storyCode: story,
+				code: {
+					html: html,
+					js: js,
+					css: css
+				}
+			};
+
+			var mission = $scope.missionsByHref[missionHref];
+			mission.title = name;
+
+			$scope.mission = mission;
+
+			// Listen for users online
+			if (angular.isDefined($scope.missionUpdate)) {
+				$interval.cancel($scope.missionUpdate);
+			}
+
+			function missionUpdate() {
+				missionJoin(); // Inform server that we are still here
+				$scope.socket.emit("queryMissionUsersNow", missionHref, function(missionUsersNow) {
+					var mission = $scope.missionsByHref[missionUsersNow.mission];
+					if (mission) {
+						if (missionUsersNow.items.length > 0) {
+							$scope.$apply(function() {
+								for(var i = 0; i < missionUsersNow.items.length; i++) {
+									var currentPeers = _.pluck(mission.peers, 'userName');
+									var item = missionUsersNow.items[i];
+									if (!_.contains(currentPeers, item.userName)) {
+										mission.peers.push(item);
+									}
+								}
+								var currentPeers = _.pluck(mission.peers, 'userName');
+								var latestPeers = _.pluck(missionUsersNow.items, 'userName');
+								var toRemove = _.difference(currentPeers, latestPeers);
+								for(var j = 0; j < toRemove.length; j++) {
+									var peerToRemove = toRemove[j];
+									for (var k = 0; k < mission.peers.length; k++) {
+										var peer = mission.peers[k];
+										if (peer.userName == peerToRemove) {
+											mission.peers.splice(k, 1);
+										}
+									}
+								}
+							});
+						} else {
+							$scope.$apply(function() {
+								mission.peers.length = 0;
+							});
+						}
+					}
+				});
+			}
+			missionUpdate();
+			$scope.missionUpdate = $interval(missionUpdate, MISSIONUPDATE_INTERVAL);
+
+			item.story = $sce.trustAsHtml(item.storyCode);		
+			
+			$rootScope.peersCode.push(item);  	
+			if (id == '__YOURS__') {
+				$rootScope.stepsCode.push(item);
+			}
+		});	
+	}
+
+	$rootScope.avatar_url = {src:''};
+
+	$scope.handleGitHubLoginSuccess = function(code) {
+		$.getJSON('/authenticate/'+code, function(data) {
+			$rootScope.token = data.token;
+			var gh = new Github({
+			token: $rootScope.token,
+				auth: 'oauth'
+			});
+			$rootScope.github = gh;
+			var user = gh.getUser();
+			user.show('', function(err, user) { 
+				$scope.$apply(function() {
+					$scope.userLoggedIn = true;
+					$scope.userName = user.login;
+					$rootScope.gitHubUserName = user.login;
+					$rootScope.avatar_url.src = user.avatar_url + "s=18";
+				});
+				var repo = gh.getRepo(user.login, 'SaveTBL');
+				repo.createRepo({name:'SaveTBL', auto_init:true}, function(err, data) {
+					if (err) {
+						console.log('Could not create the repo named SaveTBL: ' + err);
+					}
+				});
+			});
+		});
+	};
+
+	window.handleGitHubLoginSuccess = $scope.handleGitHubLoginSuccess;
+
+	// Set up socket to listen for mission.join and mission.leave events
+	$scope.socket = io.connect('');
+
+	/*
+		if (msg.type == 'mission.join') {
+			var mission = $scope.missionsByHref[msg.mission];
+			$scope.$apply(function() {
+				if (mission) mission.peers.push(msg);
+			});
+		} else if (msg.type == 'mission.leave') {
+			console.log(msg.userName);
+			console.log(msg.avatar_url);
+		}	
+	*/
+
+	$rootScope.questList();
+});
+  </script>
+  <script type='text/coffeescript' src='lib/tutorializr/tutorializr.coffee'></script>
+  <script type='text/coffeescript' src='lib/learnlocity/learnlocity.identity.coffee'></script>
+  <script type='text/coffeescript' src='lib/learnlocity/learnlocity.editor.coffee'></script>
+  <script src='lib/mongolab/mongoLabResourceFactory.js'></script>  
+  <script type='text/coffeescript' src='lib/learnlocity/learnlocity.api.coffee'></script>  
+  <script type="text/javascript" src="lib/coffee/coffee-script.min.js"></script>
+  <script type="text/coffeescript">
+$ ->
+  angular.bootstrap document, ['learnlocity', 'ui.bootstrap']
+  </script>
+</html>

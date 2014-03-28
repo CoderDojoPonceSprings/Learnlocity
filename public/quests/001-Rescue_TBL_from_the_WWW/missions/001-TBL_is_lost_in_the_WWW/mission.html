@@ -1,0 +1,83 @@
+<html>
+	<head>
+		<title>Intro</title>
+		<id>__YOURS__</id>
+		<style></style>
+		<script></script>
+	</head>
+	<body>
+		<section><![CDATA[
+<p>HTML stands for Hypertext Markup Language. It was invented by British computer scientist Tim Berners-Lee back in the late 1980s. This is what he used to look like:</p>
+
+<img 
+	id='tblPic'
+	src='img/TBL-Normal.jpg'
+	onclick='knighted()'  
+	alt='Tim Berners-Lee'
+	title='Tim Berners-Lee'
+	class='normal'
+/>
+
+<style>
+.knighted {
+	border: 25px darkblue ridge;	
+}
+
+.normal {
+	border: 15px gray groove;
+}
+</style>
+
+<script>
+function knighted() {
+	var timPic = document.getElementById('tblPic');
+	timPic.src = 'img/TBL-Knight.jpg';
+	timPic.alt = 'Sir Tim Berners-Lee';
+	timPic.title = 'Sir Tim Berners-Lee';
+	timPic.className = 'knighted';
+	timPic.onclick = normal;
+}
+
+function normal() {
+	var timPic = document.getElementById('tblPic');
+	timPic.src = 'img/TBL-Normal.jpg';
+	timPic.alt = 'Tim Berners-Lee';
+	timPic.title = 'Tim Berners-Lee';
+	timPic.className = 'normal';
+	timPic.onclick = knighted;
+}
+</script>
+
+<p>In 2004, Queen Elizbeth the II of the British government <strong>knighted him</strong> for his invention, so now he's called <strong>Sir Tim Berners-Lee</strong>. Click on his picture to see what he normally looks like these days.</p>
+
+]]>
+		</section>
+		<section><![CDATA[<!DOCTYPE html>
+<html>
+	<head>
+		<title>{{Name}}'s first HTML Game</title>
+	</head>
+	
+	<body>
+		<h1>Tic-Tac-Toe</h1>
+		
+		<div id='instructions'>
+			<ul>
+				<li>X goes first</li>
+				<li>Followed by O</li>
+				<li>3-in-a-row wins!</li>
+			</ul>
+		</div>
+		
+		<div id="credits">
+			<hr />
+			<p>Brought to you by {{YourCompanyName}}</p>
+			<p><img src="{{YourCompanyLogoHere.jpg}}" /></p>
+			<hr />
+		</div>
+		<a href="example.html">See an example!</a>
+	</body>
+	
+</html>]]></section>
+	</body>
+</html>

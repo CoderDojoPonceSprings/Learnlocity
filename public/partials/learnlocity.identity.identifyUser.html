@@ -1,0 +1,68 @@
+<div class="modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">Log in or Register</div>
+      </div>
+      <div class="modal-body">
+        <tabset>
+          <tab heading="Login">
+            <form name='loginForm'>
+              <fieldset>
+                <div class="control-group">
+                  <label class="control-label required" for="userName">Username</label>
+                  <div class="controls">
+                    <input id="userName" name="userName" ng-model="form.userName" class="input-xlarge" required type="text">
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label required" for="password">Password</label>
+                  <div class="controls">
+                    <input id="password" name="password" ng-model="form.password" class="input-xlarge" required type="password">
+                  </div>
+                </div>          
+              </fieldset>
+              <button ng-click="logIn(result)" class="btn btn-primary" ng-disabled='loginForm.$invalid'>Log In</button>&nbsp;
+              <span ng-show='loginFailed'
+                class='badge badge-important'>Invalid Username or Password</span>
+            </form>
+          </tab>
+          <tab heading="Register">
+            <form name='registerForm'>
+              <fieldset>
+                <div class="control-group">
+                  <label class="control-label required" for="userName">Username</label>
+                  <div class="controls">
+                    <input id="userName" name="userName" ng-model="form.userName" class="input-xlarge" required type="text">
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label required" for="password">Password</label>
+                  <div class="controls">
+                    <input id="password" name="password" ng-model="form.password" class="input-xlarge" required type="password">
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label required" for="password">Password Confirmation</label>
+                  <div class="controls">
+                    <input id="password" name="passwordConfirmation" ng-model="form.passwordConfirmation" 
+                      class="input-xlarge" required type="password" match="form.password">
+                  </div>
+                  <div ng-show='registerForm.passwordConfirmation.$error.mismatch'>
+                    <span class='badge badge-important'>Password and Password Confirmation must match.</span>
+                  </div>                
+                </div>                    
+              </fieldset>
+              <button ng-click="register(result)" class="btn btn-primary" ng-disabled='registerForm.$invalid'>Register</button>&nbsp;
+              <span ng-show='userNameTaken' 
+                    class='badge badge-important'>Username already taken</span>
+            </form>      
+          </tab>
+        </tabset>
+      </div>
+      <div class="modal-footer">
+        <button ng-click="close(result)" class="btn">Cancel</button>
+      </div>      
+    </div>
+  </div>
+</div>

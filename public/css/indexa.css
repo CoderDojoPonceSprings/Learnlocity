@@ -1,0 +1,110 @@
+html, body {
+	margin: 0px;
+	height: 100%;
+	min-height: 100%;
+	display: block;
+	width: 100%;
+}
+
+#mainPanel {
+	padding: 0;
+}
+
+#slides {
+	display: none;
+}		
+
+.pagination {
+	margin: 0;
+}
+
+.pagination-sm {
+	margin: 0;
+}
+
+.panel-heading {
+	padding: 3px;
+	padding-top: 6px;
+	padding-left: 6px;
+}
+
+.list-group {
+	margin-bottom: 0;
+}
+
+.panel-footer {
+	padding: 6px;
+}
+
+#resourcesShow {
+	margin-bottom: 3px;
+}
+
+#resourcesHide {
+	margin-bottom: 3px;
+}
+
+#slide_content .figure {
+	text-align: center;
+}
+
+#slide_content .figure h4 {
+	font-weight: bold;
+}
+
+label {
+	font-weight: normal;
+}
+
+.dimmed {
+	color: #999999;
+}
+
+.correct-selected {
+	color: green;
+	font-weight: bold;
+}
+.correct {
+	color: green;
+}
+
+.incorrect {
+	color: red;
+}
+
+.editor-controls {
+	background: darkgray;
+	padding: 2px;
+}
+
+/* Tutorial specific styles */
+
+.aside {
+  padding: 10px;
+  background: lightgray;
+  border: 1px solid darkgray;
+}
+
+.patience {
+  padding: 10px;
+  background: salmon;
+  border: 2px dashed darkred;
+}
+
+.question {
+  padding: 10px;
+  background: pink;
+  border: 2px solid brown;
+}
+
+
+blockquote {
+  border-left: 2px solid darkgray;
+  background: #fcfcfc;
+  padding-left: 25px;
+  font-style: italic;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
