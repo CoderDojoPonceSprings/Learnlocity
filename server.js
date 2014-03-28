@@ -82,10 +82,9 @@ app.get('/authenticate/:code', function(req, res) {
 
 app.use(express.static(__dirname + '/public'));
 
-/*
-mongo.connect("mongodb://localhost:27017/learnlocity", function(err, db) {
+//mongo.connect("mongodb://localhost:27017/learnlocity", function(err, db) {
+mongo.connect("mongodb://$admin:ixl101#$@ds027748.mongolab.com:27748/coderdojolearnlocity", function(err, db) {  
   msgs = db.collection('msg');
-
   io.sockets.on('connection', function(socket) {
     socket.on('msg', function(msg) {
       var decoratedMessage = decorateMessage(msg);
@@ -153,7 +152,6 @@ mongo.connect("mongodb://localhost:27017/learnlocity", function(err, db) {
     });    
   }); 
 });
-*/
 
 var port = process.env.PORT || config.port || 80;
 
