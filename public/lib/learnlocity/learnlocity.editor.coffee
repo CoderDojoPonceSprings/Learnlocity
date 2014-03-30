@@ -137,7 +137,6 @@
 						$scope.preview()
 					updateEditorHeights()
 				, 250
-				$scope.load()
 
 		$scope.save = ->
 			userName = $rootScope.gitHubUserName
