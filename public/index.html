@@ -328,7 +328,7 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 
 			var mission = $scope.missionsByHref[missionHref];
 			mission.name = name;
-			mission.story = story;
+			mission.story = $sce.trustAsHtml(story);
 			mission.peerCode = {};
 
 			$scope.mission = mission;
@@ -374,9 +374,7 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 				});
 			}
 			missionUpdate();
-			$scope.missionUpdate = $interval(missionUpdate, MISSIONUPDATE_INTERVAL);
-
-			item.story = $sce.trustAsHtml(item.storyCode);		
+			$scope.missionUpdate = $interval(missionUpdate, MISSIONUPDATE_INTERVAL);	
 			
 			// Add our default code
 			// TODO: take this from the repo after initializing it to a cloned repo
