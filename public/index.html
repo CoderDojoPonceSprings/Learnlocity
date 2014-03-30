@@ -176,7 +176,7 @@ iframe {
 						<tabset>
 							<tab 
 								ng-repeat='peerCode in mission.peerCode' 							
-								heading='peerCode.userName'>
+								heading='{{peerCode.userName}}'>
 									<section 
 										ng-init='code=peerCode' 
 										ng-include='"partials/learnlocity.editor.editor.html"'
