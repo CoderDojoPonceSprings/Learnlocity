@@ -173,11 +173,16 @@ iframe {
 								</div>
 							</span>
 						</div>
-						<div 
-							ng-repeat='peerCode in mission.peerCode' 
-							ng-init='code=peerCode' 
-							ng-include='"partials/learnlocity.editor.editor.html"'
-							ng-controller='editorController'>{{peerCode}}</div>
+						<tabset>
+							<tab 
+								ng-repeat='peerCode in mission.peerCode' 							
+								heading='peerCode.userName'>
+									<section 
+										ng-init='code=peerCode' 
+										ng-include='"partials/learnlocity.editor.editor.html"'
+										ng-controller='editorController'></section>
+							</tab>
+						</tabset>
 					</div>
 				</div>
 			</div>	
@@ -302,6 +307,7 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 			var css = xml.getElementsByTagName('style')[0].textContent;
 
 			var item = {
+				userName: $rootScope.gitHubUserName,
 				name: name,
 				id: id,
 				storyCode: story,
@@ -404,6 +410,7 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 
 	$scope.load = function(userName) {
 		var item = {
+			userName: userName,
 			name: "TODO name",
 			id: "TODO id",
 			storyCode: "TODO story",
@@ -413,6 +420,8 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 				css: ""
 			}
 		};
+		console.log('The username to load:');
+		console.log(userName);
 		missionPeerCodeAdd($scope.mission, userName, item);
 		repo = $rootScope.github.getRepo(userName, 'SaveTBL');
 		var fileTypes = ['html', 'css', 'js'];
