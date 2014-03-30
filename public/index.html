@@ -329,6 +329,8 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 			var mission = $scope.missionsByHref[missionHref];
 			mission.name = name;
 			mission.storyCode = story;
+			console.log('mission story:');
+			console.log(mission.storyCode);
 			mission.peerCode = {};
 
 			$scope.mission = mission;
