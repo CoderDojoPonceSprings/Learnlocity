@@ -175,7 +175,7 @@ iframe {
 						</div>
 						<div 
 							ng-repeat='peerCode in mission.peerCode' 
-							ng-init='code=peerCode.code' 
+							ng-init='code=peerCode' 
 							ng-include='"partials/learnlocity.editor.editor.html"'
 							ng-controller='editorController'>{{peerCode}}</div>
 					</div>
