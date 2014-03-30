@@ -402,7 +402,7 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 	// Set up socket to listen for mission.join and mission.leave events
 	$scope.socket = io.connect('');
 
-	$scope.load = (userName) ->
+	$scope.load = function(userName) {
 		var item = {
 			name: "TODO name",
 			id: "TODO id",
@@ -415,12 +415,21 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 		};
 		missionPeerCodeAdd($scope.mission, userName, item);
 		repo = $rootScope.github.getRepo(userName, 'SaveTBL');
-		for fileType in ['html', 'css', 'js']
-			do (fileType) ->
-				repo.read 'master', 'index.' + fileType, (err, data) ->
-					if err then console.log 'Error reading data from GitHub: ' + err
-					else item.code[fileType] = data;
-							
+		var fileTypes = ['html', 'css', 'js'];
+		for (var i = 0; i < fileTypes.length; i++) {
+			(function(fileType) {
+				repo.read('master', 'index.' + fileType, function(err, data) {
+					if (err) { 
+						console.log('Error reading data from GitHub: ' + err); 
+					}
+					else { 
+						item.code[fileType] = data;
+					}
+				});
+			})(fileTypes[i]);
+		}
+	}
+
 	$rootScope.questList();
 });
   </script>
