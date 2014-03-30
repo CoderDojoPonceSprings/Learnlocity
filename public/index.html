@@ -166,7 +166,7 @@ iframe {
 										<img ng-src='{{peer.avatar_url}}' src='https://avatars.githubusercontent.com/u/7043781?s=18' alt='{{peer.userName}}' width='18' height='18' />&nbsp;<span class="caret"></span>
 									</button>
 									<ul class="dropdown-menu" role="menu">
-										<li><a href="#" ng-click='load(peer)'><i class='glyphicon glyphicon-search'></i>&nbsp;Code Spyglass</a></li>												
+										<li><a href="#" ng-click='loadPeer(peer)'><i class='glyphicon glyphicon-search'></i>&nbsp;Code Spyglass</a></li>												
 										<li class="divider"></li>
 										<li><a href="#"><i class="fa fa-thumbs-o-up"></i>&nbsp;Give Props</a></li>
 									</ul>
@@ -417,7 +417,7 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 	// Set up socket to listen for mission.join and mission.leave events
 	$scope.socket = io.connect('');
 
-	$scope.load = function(peer) {
+	$scope.loadPeer = function(peer) {
 		console.log('the peer is loading:');
 		console.log(peer);
 		var item = createCodeItem(peer.userName, "", "", "");		
