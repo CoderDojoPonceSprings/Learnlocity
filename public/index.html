@@ -166,7 +166,7 @@ iframe {
 										<img ng-src='{{peer.avatar_url}}' src='https://avatars.githubusercontent.com/u/7043781?s=18' alt='{{peer.userName}}' width='18' height='18' />&nbsp;<span class="caret"></span>
 									</button>
 									<ul class="dropdown-menu" role="menu">
-										<li><a href="#" ng-click='load(peer.userName)'><i class='glyphicon glyphicon-search'></i>&nbsp;Code Spyglass</a></li>												
+										<li><a href="#" ng-click='load(peer)'><i class='glyphicon glyphicon-search'></i>&nbsp;Code Spyglass</a></li>												
 										<li class="divider"></li>
 										<li><a href="#"><i class="fa fa-thumbs-o-up"></i>&nbsp;Give Props</a></li>
 									</ul>
@@ -175,10 +175,12 @@ iframe {
 						</div>
 						<tabset>
 							<tab 
-								ng-repeat='peerCode in mission.peerCode' 							
-								heading='{{peerCode.userName}}'>
+								ng-repeat='peerCode in mission.peerCode'>
+									<tab-heading>
+										{{peerCode.userName}} <i ng-click='close(peerCode)' class="fa fa-times-circle-o"></i>
+									</tab-heading>								
 									<section 
-										ng-init='code=peerCode' 
+										ng-init='code=peerCode;storyCode=mission.storyCode' 
 										ng-include='"partials/learnlocity.editor.editor.html"'
 										ng-controller='editorController'></section>
 							</tab>
@@ -216,8 +218,24 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 
 	var questsByName = {};
 
+	function createCodeItem(userName, html, css, js) {
+		var item = {
+			userName: userName,
+			code: {
+				html: html,
+				css: css,
+				js: js
+			}
+		};
+		return item;
+	}
+
 	function missionPeerCodeAdd(mission, userName, code) {			
 		mission.peerCode[userName] = code;
+	}	
+
+	function missionPeerCodeRemove(mission, userName) {
+		delete mission.peerCode[userName];
 	}	
 
 	$rootScope.questList = function() {
@@ -306,20 +324,11 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 			var js = xml.getElementsByTagName('script')[0].textContent;
 			var css = xml.getElementsByTagName('style')[0].textContent;
 
-			var item = {
-				userName: $rootScope.gitHubUserName,
-				name: name,
-				id: id,
-				storyCode: story,
-				code: {
-					html: html,
-					js: js,
-					css: css
-				}
-			};
+			var item = createCodeItem($rootScope.gitHubUserName, html, css, js);
 
 			var mission = $scope.missionsByHref[missionHref];
-			mission.title = name;
+			mission.name = name;
+			mission.storyCode = story;
 			mission.peerCode = {};
 
 			$scope.mission = mission;
@@ -408,20 +417,11 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 	// Set up socket to listen for mission.join and mission.leave events
 	$scope.socket = io.connect('');
 
-	$scope.load = function(userName) {
-		var item = {
-			userName: userName,
-			name: "TODO name",
-			id: "TODO id",
-			storyCode: "TODO story",
-			code: {
-				html: "",
-				js: "",
-				css: ""
-			}
-		};
-		missionPeerCodeAdd($scope.mission, userName, item);
-		repo = $rootScope.github.getRepo(userName, 'SaveTBL');
+	$scope.load = function(peer) {
+		var item = createCodeItem(peer.userName, "", "", "");		
+		missionPeerCodeAdd($scope.mission, peer.userName, item);
+
+		repo = $rootScope.github.getRepo(peer.userName, 'SaveTBL');
 		var fileTypes = ['html', 'css', 'js'];
 		for (var i = 0; i < fileTypes.length; i++) {
 			(function(fileType) {
@@ -436,6 +436,10 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 			})(fileTypes[i]);
 		}
 	}
+
+	$scope.close = function(peerCode) {
+		missionPeerCodeRemove(peerCode.userName);
+	};
 
 	$rootScope.questList();
 });
