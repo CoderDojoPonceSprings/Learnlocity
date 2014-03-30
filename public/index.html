@@ -418,6 +418,8 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 	$scope.socket = io.connect('');
 
 	$scope.load = function(peer) {
+		console.log('the peer:');
+		console.log(peer);
 		var item = createCodeItem(peer.userName, "", "", "");		
 		missionPeerCodeAdd($scope.mission, peer.userName, item);
 
