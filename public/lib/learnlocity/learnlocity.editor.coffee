@@ -114,9 +114,9 @@
 			html.append head
 			html.append body
 
-			codeId = $scope.code.id
+			userName = $scope.code.userName
 
-			$("#" + codeId).each ->
+			$("#" + userName).each ->
 				doc = @contentWindow.document
 				doc.open()
 				doc.write "<html>" + html.html() + "</html>"
