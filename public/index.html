@@ -180,7 +180,7 @@ iframe {
 										{{peerCode.userName}} <i ng-click='close(peerCode)' class="fa fa-times-circle-o"></i>
 									</tab-heading>								
 									<section 
-										ng-init='code=peerCode;storyCode=mission.storyCode' 
+										ng-init='code=peerCode;mission=mission'
 										ng-include='"partials/learnlocity.editor.editor.html"'
 										ng-controller='editorController'></section>
 							</tab>
