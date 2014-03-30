@@ -438,7 +438,7 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 	}
 
 	$scope.close = function(peerCode) {
-		missionPeerCodeRemove(peerCode.userName);
+		missionPeerCodeRemove($scope.mission, peerCode.userName);
 	};
 
 	$rootScope.questList();
