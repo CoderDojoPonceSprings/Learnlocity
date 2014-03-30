@@ -51,7 +51,7 @@
   <div class='row-fluid'>
     <div class='editor {{getEditorsClass()}}' ng-show='displays.step' id='step'>
       <div style='padding: 3px'><strong>Step</strong> <i class='glyphicon glyphicon-tower'></i></div>      
-      <div ng-bind-html='code.story'></div>
+      <div ng-bind-html='mission.story'></div>
     </div>
     <div class='editor {{getEditorsClass()}}' ng-show='displays.html'>
       <div style='background: #F06428; color: black;'><strong>HTML</strong> <i class='glyphicon glyphicon-edit'></i></div>
@@ -62,7 +62,7 @@
           showGutter: true,
           mode: 'html',
           onLoad: htmlLoaded
-        }" ng-model="mission.storyCode"></div>
+        }" ng-model="code.code['html']"></div>
       </div>
     </div>
     <div class='editor {{getEditorsClass()}}' ng-show='displays.css'>
