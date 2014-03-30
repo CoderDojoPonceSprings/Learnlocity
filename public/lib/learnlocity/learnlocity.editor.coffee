@@ -152,25 +152,5 @@
 							content = jsEditor.getSession().getValue()					
 							repo.write 'master', 'index.js', content, 'Commit from Learnlocity!', (err) ->
 							if err 
-								console.log 'Error creating file in GitHub:' + err 
-
-		$scope.load = (userName) ->	
-			map = 
-				'JogoShugh' : 'JoshGough'
-				'JoshGough' : 'JogoShugh'
-			if userName
-				userName = map[$rootScope.gitHubUserName]
-			else
-				userName = $rootScope.gitHubUserName
-
-			repo = $rootScope.github.getRepo(userName, 'SaveTBL');
-			for editorName, editor of editors
-				do (editorName, editor) ->
-					repo.read 'master', 'index.' + editorName, (err, data) ->
-						editor.getSession().setValue(data) if not err
-						if err then console.log 'Error reading data from GitHub: ' + err
-		
-		# TODO remove hack
-		$rootScope.load = $scope.load
-
+								console.log 'Error creating file in GitHub:' + err
 )()
