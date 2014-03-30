@@ -420,8 +420,6 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 				css: ""
 			}
 		};
-		console.log('The username to load:');
-		console.log(userName);
 		missionPeerCodeAdd($scope.mission, userName, item);
 		repo = $rootScope.github.getRepo(userName, 'SaveTBL');
 		var fileTypes = ['html', 'css', 'js'];

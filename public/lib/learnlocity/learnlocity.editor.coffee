@@ -116,6 +116,10 @@
 
 			userName = $scope.code.userName
 
+			console.log('The username for the preview is:')
+			console.log(userName)
+			console.log($('#' + userName)[0])
+
 			$("#" + userName).each ->
 				doc = @contentWindow.document
 				doc.open()
