@@ -293,7 +293,6 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 		}
 
 		$http.get(missionHref).success(function(data) {
-			initializeCode();
 			var xml = new DOMParser().parseFromString(data, "application/xml");
 			var name = xml.getElementsByTagName('title')[0].textContent;
 			var id = xml.getElementsByTagName('id')[0].textContent;
