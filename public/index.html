@@ -168,7 +168,7 @@ iframe {
 													<img title="{{peer.userName}}" ng-src='{{peer.avatar_url}}' src='https://avatars.githubusercontent.com/u/7043781?s=18' alt='{{peer.userName}}' width='18' height='18' />&nbsp;<span class="caret"></span>
 												</button>
 												<ul class="dropdown-menu" role="menu">
-													<li><a href="#" ng-click='loadPeer(peer)'><i class='glyphicon glyphicon-search'></i>&nbsp;Code Spyglass</a></li>												
+													<li><a href="#" ng-click='loadPeer(peer)'><i class='glyphicon glyphicon-search'></i>&nbsp;Code Spyglass</a></li>											
 													<li class="divider"></li>
 													<li><a href="#"><i class="fa fa-thumbs-o-up"></i>&nbsp;Give Props</a></li>
 												</ul>					
@@ -238,10 +238,12 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 		return peer;
 	}
 
-	function missionPeerCodeAdd(mission, userName, code) {
+	function missionPeerCodeUpdate(mission, userName, code) {
 		var peer = missionPeerByUserName(mission, userName);
 		if (peer) {
-			peer.code = code;
+			peer.code.html = code.html;
+			peer.code.css = code.css;
+			peer.code.js = code.js;
 		}
 	}
 
@@ -288,8 +290,6 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 					peers:[]
 				};				
 				missions.push(mission);
-				console.log('Adding mission:');
-				console.log(mission.href);
 				$rootScope.missionsByHref[mission.href] = mission;
 			}
 			$rootScope.missions = missions;
@@ -355,6 +355,8 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 									var currentPeers = _.pluck(mission.peers, 'userName');
 									var item = missionUsersNow.items[i];
 									if (!_.contains(currentPeers, item.userName)) {
+										// Decorate with a code item
+										item.code = createCodeItem(item.userName, "", "", "");
 										mission.peers.push(item);
 									}
 								}
@@ -384,7 +386,7 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 			
 			// Add our default code
 			// TODO: take this from the repo after initializing it to a cloned repo
-			missionPeerCodeAdd(mission, $rootScope.gitHubUserName, item);
+			missionPeerCodeUpdate(mission, $rootScope.gitHubUserName, item);
 		});	
 	}
 
@@ -425,7 +427,7 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 		console.log('the peer is loading:');
 		console.log(peer);
 		var item = createCodeItem(peer.userName, "", "", "");		
-		missionPeerCodeAdd($scope.mission, peer.userName, item);
+		missionPeerCodeUpdate($scope.mission, peer.userName, item);
 
 		repo = $rootScope.github.getRepo(peer.userName, 'SaveTBL');
 		var fileTypes = ['html', 'css', 'js'];
