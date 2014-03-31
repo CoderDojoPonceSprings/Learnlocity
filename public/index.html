@@ -160,7 +160,7 @@ iframe {
 							<strong style='font-size:125%;'>Current Mission:</strong>&nbsp;{{mission.title}}&nbsp;
 							<section>
 								<tabset>
-									<tab ng-repeat='peerCode in mission.peerCode'>
+									<tab ng-repeat='peer in mission.peers'>
 										<tab-heading>
 											<div class='btn-group'>
 												<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -176,7 +176,7 @@ iframe {
 											<!-- <i ng-click='close(peerCode)' class="fa fa-times-circle-o"></i> -->
 										</tab-heading>								
 										<section 
-											ng-init='code=peerCode;mission=mission'
+											ng-init='code=peer.code;mission=mission'
 											ng-include='"partials/learnlocity.editor.editor.html"'
 											ng-controller='editorController'></section>
 									</tab>
@@ -228,13 +228,16 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 		return item;
 	}
 
-	function missionPeerCodeAdd(mission, userName, code) {			
-		mission.peerCode[userName] = code;
-	}	
+	function missionPeerByUserName(mission, userName) {
+		return _.findWhere(mission.peers, {userName:userName});
+	}
 
-	function missionPeerCodeRemove(mission, userName) {
-		delete mission.peerCode[userName];
-	}	
+	function missionPeerCodeAdd(mission, userName, code) {
+		var peer = missionPeerByUserName(mission, userName);
+		if (peer) {
+			peer.code = code;
+		}
+	}
 
 	$rootScope.questList = function() {
 		$rootScope.quests = [];
@@ -434,10 +437,6 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 			})(fileTypes[i]);
 		}
 	}
-
-	$scope.close = function(peerCode) {
-		missionPeerCodeRemove($scope.mission, peerCode.userName);
-	};
 
 	$rootScope.questList();
 });
