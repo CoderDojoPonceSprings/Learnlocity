@@ -230,28 +230,8 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 	}
 
 	function missionPeerByUserName(mission, userName) {
-		console.log('the peers:');
-		console.log(mission.peers);
 		var peer = _.findWhere(mission.peers, {userName:userName});
-		console.log('found peer:');
-		console.log(peer);
 		return peer;
-	}
-
-	function missionPeerCodeUpdate(mission, userName, code) {
-		var peer = missionPeerByUserName(mission, userName);
-		console.log('This is the peer to update:');
-		console.log(peer);
-		if (peer) {
-			console.log('This is the code we got:');
-			console.log(code);
-			console.log('This is the code we are modifying:');
-			console.log(peer.code);
-			peer.code.code.html = code.code.html;
-			peer.code.code.css = code.code.css;
-			peer.code.code.js = code.code.js;
-			console.log(peer);
-		}
 	}
 
 	$rootScope.questList = function() {
@@ -390,11 +370,7 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 				});
 			}
 			missionUpdate();
-			$scope.missionUpdate = $interval(missionUpdate, MISSIONUPDATE_INTERVAL);	
-			
-			// Add our default code
-			// TODO: take this from the repo after initializing it to a cloned repo
-			missionPeerCodeUpdate(mission, $rootScope.gitHubUserName, item);
+			$scope.missionUpdate = $interval(missionUpdate, MISSIONUPDATE_INTERVAL);			
 		});	
 	}
 
@@ -431,7 +407,7 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 	// Set up socket to listen for mission.join and mission.leave events
 	$scope.socket = io.connect('');
 
-	$scope.loadPeer = function(peer) {
+	$scope.loadPeer = function(mission, peer) {
 		console.log('the peer is loading:');
 		console.log(peer);
 		var peer = missionPeerByUserName(mission, peer.userName);
