@@ -324,7 +324,6 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 				missionJoin(); // Inform server that we are still here
 				$scope.socket.emit("queryMissionUsersNow", missionHref, function(missionUsersNow) {
 					var mission = $scope.missionsByHref[missionUsersNow.mission];
-					window.MISSION = mission;
 					if (mission) {
 						if (missionUsersNow.items.length > 0) {
 							$scope.$apply(function() {
@@ -397,10 +396,7 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 	$scope.socket = io.connect('');
 
 	$scope.loadPeer = function(mission, peer) {
-		console.log('the peer is loading:');
-		console.log(peer);
 		var peer = missionPeerByUserName(mission, peer.userName);
-
 		repo = $rootScope.github.getRepo(peer.userName, 'SaveTBL');
 		var fileTypes = ['html', 'css', 'js'];
 		for (var i = 0; i < fileTypes.length; i++) {
