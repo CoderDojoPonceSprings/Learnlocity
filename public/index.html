@@ -230,6 +230,8 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 	}
 
 	function missionPeerByUserName(mission, userName) {
+		console.log('the peers:');
+		console.log(mission.peers);
 		var peer = _.findWhere(mission.peers, {userName:userName});
 		console.log('found peer:');
 		console.log(peer);
