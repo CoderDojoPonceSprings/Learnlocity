@@ -156,35 +156,33 @@ iframe {
 						</div>
 					</div>
 					<div ng-show='!homeVisible'>
-						<div style='margin-bottom:4px; font-size:125%;'>
-							<strong>Current Mission:</strong>&nbsp;{{mission.title}}&nbsp;
-							<span style='padding:3px;'>
-								<strong>Mission Team:</strong>&nbsp;
-								<div class='btn-group' ng-repeat='peer in mission.peers'>
-									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-										<!-- TODO: remove dumb hard coded avatar -->
-										<img ng-src='{{peer.avatar_url}}' src='https://avatars.githubusercontent.com/u/7043781?s=18' alt='{{peer.userName}}' width='18' height='18' />&nbsp;<span class="caret"></span>
-									</button>
-									<ul class="dropdown-menu" role="menu">
-										<li><a href="#" ng-click='loadPeer(peer)'><i class='glyphicon glyphicon-search'></i>&nbsp;Code Spyglass</a></li>												
-										<li class="divider"></li>
-										<li><a href="#"><i class="fa fa-thumbs-o-up"></i>&nbsp;Give Props</a></li>
-									</ul>
-								</div>
-							</span>
+						<div style='margin-bottom:4px;'>
+							<strong style='font-size:125%;'>Current Mission:</strong>&nbsp;{{mission.title}}&nbsp;
+							<section>
+								<tabset>
+									<tab ng-repeat='peerCode in mission.peerCode'>
+										<tab-heading>
+											<div class='btn-group'>
+												<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+													<!-- TODO: remove dumb hard coded avatar -->
+													<img title="{{peerCode.userName}}" ng-src='{{peer.avatar_url}}' src='https://avatars.githubusercontent.com/u/7043781?s=18' alt='{{peer.userName}}' width='18' height='18' />&nbsp;<span class="caret"></span>
+												</button>
+												<ul class="dropdown-menu" role="menu">
+													<li><a href="#" ng-click='loadPeer(peer)'><i class='glyphicon glyphicon-search'></i>&nbsp;Code Spyglass</a></li>												
+													<li class="divider"></li>
+													<li><a href="#"><i class="fa fa-thumbs-o-up"></i>&nbsp;Give Props</a></li>
+												</ul>					
+											</div>
+											<!-- <i ng-click='close(peerCode)' class="fa fa-times-circle-o"></i> -->
+										</tab-heading>								
+										<section 
+											ng-init='code=peerCode;mission=mission'
+											ng-include='"partials/learnlocity.editor.editor.html"'
+											ng-controller='editorController'></section>
+									</tab>
+								</tabset>
+							</section>
 						</div>
-						<tabset>
-							<tab 
-								ng-repeat='peerCode in mission.peerCode'>
-									<tab-heading>
-										{{peerCode.userName}} <i ng-click='close(peerCode)' class="fa fa-times-circle-o"></i>
-									</tab-heading>								
-									<section 
-										ng-init='code=peerCode;mission=mission'
-										ng-include='"partials/learnlocity.editor.editor.html"'
-										ng-controller='editorController'></section>
-							</tab>
-						</tabset>
 					</div>
 				</div>
 			</div>	
