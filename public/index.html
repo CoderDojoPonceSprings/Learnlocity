@@ -240,10 +240,12 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 
 	function missionPeerCodeUpdate(mission, userName, code) {
 		var peer = missionPeerByUserName(mission, userName);
+		console.log(peer);
 		if (peer) {
 			peer.code.html = code.html;
 			peer.code.css = code.css;
 			peer.code.js = code.js;
+			console.log(peer);
 		}
 	}
 
@@ -348,6 +350,7 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 				missionJoin(); // Inform server that we are still here
 				$scope.socket.emit("queryMissionUsersNow", missionHref, function(missionUsersNow) {
 					var mission = $scope.missionsByHref[missionUsersNow.mission];
+					window.MISSION = mission;
 					if (mission) {
 						if (missionUsersNow.items.length > 0) {
 							$scope.$apply(function() {
