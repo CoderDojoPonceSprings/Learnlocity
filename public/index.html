@@ -240,8 +240,13 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 
 	function missionPeerCodeUpdate(mission, userName, code) {
 		var peer = missionPeerByUserName(mission, userName);
+		console.log('This is the peer to update:');
 		console.log(peer);
 		if (peer) {
+			console.log('This is the code we got:');
+			console.log(code);
+			console.log('This is the code we are modifying:');
+			console.log(peer.code);
 			peer.code.code.html = code.code.html;
 			peer.code.code.css = code.code.css;
 			peer.code.code.js = code.code.js;
