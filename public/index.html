@@ -242,9 +242,9 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 		var peer = missionPeerByUserName(mission, userName);
 		console.log(peer);
 		if (peer) {
-			peer.code.html = code.html;
-			peer.code.css = code.css;
-			peer.code.js = code.js;
+			peer.code.code.html = code.code.html;
+			peer.code.code.css = code.code.css;
+			peer.code.code.js = code.code.js;
 			console.log(peer);
 		}
 	}
