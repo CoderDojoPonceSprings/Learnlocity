@@ -339,11 +339,15 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 							$scope.$apply(function() {
 								for(var i = 0; i < missionUsersNow.items.length; i++) {
 									var currentPeers = _.pluck(mission.peers, 'userName');
-									var item = missionUsersNow.items[i];
-									if (!_.contains(currentPeers, item.userName)) {
+									var peer = missionUsersNow.items[i];
+									if (!_.contains(currentPeers, peer.userName)) {
 										// Decorate with a code item
-										item.code = createCodeItem(item.userName, "", "", "");
-										mission.peers.push(item);
+										peer.code = createCodeItem(peer.userName, "", "", "");
+										mission.peers.push(peer);
+										// If the peer is ourselves, load us right away!
+										if (peer.userName == $rootScope.gitHubUserName) {
+											$scope.loadPeer(mission, peer);
+										}
 									}
 								}
 								var currentPeers = _.pluck(mission.peers, 'userName');
