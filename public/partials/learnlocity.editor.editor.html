@@ -29,40 +29,35 @@
           ng-show='!displays.preview'
           ><i class='glyphicon glyphicon-eye-open'></i> Results</button>
         <div class="btn-group">
-          <button type="button" class="btn btn-danger"><i class='glyphicon glyphicon-eye-open'></i> Results</button>
+          <button 
+            type="button" 
+            class="btn btn-success"
+            ng-click='preview()'
+            ng-show='!displays.preview'
+            ><i class='glyphicon glyphicon-eye-open'></i> Results</button>
+          <button type='button' 
+            class='btn btn-inverse'
+            ng-click='previewHide()'
+            ng-show='displays.preview'
+            ><i class='glyphicon glyphicon-eye-close'></i> Results</button>        
+          <button type='button' 
+            class='btn btn-success'
+            ng-click='preview()'
+            ng-show='displays.preview && !update.whenTyping'
+            ><i class='glyphicon glyphicon-refresh'></i> Update Preview</button>
           <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
             <span class="caret"></span>
             <span class="sr-only">Toggle Dropdown</span>
           </button>
           <ul class="dropdown-menu" role="menu">
             <li>
-                <label class='checkbox'><input type='checkbox' /> Update when typing?</label>
+                <label class='checkbox'><input type='checkbox' ng-model='update.whenTyping' /> Update when typing?</label>
             </li>
             <li>
-                <label class='checkbox'><input type='checkbox' /> Show preview below?</label>
+                <label class='checkbox'><input type='checkbox' ng-model='update.previewBelow' /> Show preview below?</label>
             </li> 
           </ul>
         </div>
-        <button type='button' 
-          class='btn btn-inverse'
-          ng-click='previewHide()'
-          ng-show='displays.preview'
-          ><i class='glyphicon glyphicon-eye-close'></i> Hide Preview</button>        
-        <button type='button' 
-          class='btn btn-success'
-          ng-click='preview()'
-          ng-show='displays.preview'
-          ><i class='glyphicon glyphicon-refresh'></i> Update Preview</button>
-            <!--
-            <span ng-show='displays.preview'>Update when typing? <input 
-              type="checkbox"
-              ng-model="update.whenTyping" />
-            </span>
-            <span ng-show='displays.preview'>Show preview below? <input 
-                type="checkbox"
-                ng-model='update.previewBelow' />
-            </span>
-            -->       
       </div>
     </div>
   </div>  
