@@ -90,7 +90,7 @@
 			configureEditor editor
 
 		$scope.previewToggle = ->
-			$scope.displays.preview = !scope.displays.preview
+			$scope.displays.preview = !$scope.displays.preview
 			if $scope.displays.preview
 				$scope.preview()
 
