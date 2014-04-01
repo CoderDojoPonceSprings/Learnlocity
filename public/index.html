@@ -446,7 +446,7 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 $ ->
 	angular.bootstrap document, ['learnlocity', 'ui.bootstrap']
 
-	$('.dropdown-menu').on 'click', '.dropdown-menu-form' (e) ->
+	$(document).on 'click', 'dropdown-menu-form' (e) ->
     	e.stopPropagation()
 
   </script>
