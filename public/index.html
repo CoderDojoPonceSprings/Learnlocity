@@ -75,6 +75,12 @@ iframe {
 	min-height: 100%;
 	height: 100%;
 }
+
+ul.dropdown-menu-form {
+    padding: 5px 10px 0;
+    max-height: 300px;
+    overflow-y: scroll;
+}
     	</style>
 		<script src='lib/jquery/jquery-1.11.0.min.js'></script>	
 		<script src='//code.jquery.com/ui/1.10.4/jquery-ui.js'></script>
@@ -438,6 +444,11 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
   <script type="text/javascript" src="lib/coffee/coffee-script.min.js"></script>
   <script type="text/coffeescript">
 $ ->
-  angular.bootstrap document, ['learnlocity', 'ui.bootstrap']
+	angular.bootstrap document, ['learnlocity', 'ui.bootstrap']
+	
+	$('.dropdown-menu').on 'click', (e) ->
+    	if $(this).hasClass('dropdown-menu-form')
+    		e.stopPropagation()
+
   </script>
 </html>

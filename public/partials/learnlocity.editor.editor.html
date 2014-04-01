@@ -23,11 +23,6 @@
           class='btn btn-primary'
           ng-model='displays.js'
           btn-checkbox><img src="http://i.stack.imgur.com/Mmww2.png" height="18" width="18" /> JS</button>
-        <button type='button' 
-          class='btn btn-success'
-          ng-click='preview()'
-          ng-show='!displays.preview'
-          ><i class='glyphicon glyphicon-eye-open'></i> Results</button>
         <div class="btn-group">
           <button 
             type="button" 
@@ -36,20 +31,20 @@
             ng-show='!displays.preview'
             ><i class='glyphicon glyphicon-eye-open'></i> Results</button>
           <button type='button' 
-            class='btn btn-inverse'
+            class='btn btn-primary'
             ng-click='previewHide()'
             ng-show='displays.preview'
             ><i class='glyphicon glyphicon-eye-close'></i> Results</button>        
           <button type='button' 
-            class='btn btn-success'
+            class='btn btn-primary'
             ng-click='preview()'
             ng-show='displays.preview && !update.whenTyping'
             ><i class='glyphicon glyphicon-refresh'></i> Update Preview</button>
-          <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+          <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
             <span class="caret"></span>
             <span class="sr-only">Toggle Dropdown</span>
           </button>
-          <ul class="dropdown-menu" role="menu">
+          <ul class="dropdown-menu dropdown-menu-form" role="menu">
             <li>
                 <label class='checkbox'><input type='checkbox' ng-model='update.whenTyping' /> Update when typing?</label>
             </li>
