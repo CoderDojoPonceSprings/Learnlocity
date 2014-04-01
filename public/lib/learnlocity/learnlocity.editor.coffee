@@ -19,6 +19,8 @@
 			if $scope.displays.preview and $scope.update.previewBelow 
 				numTurnedOn--
 		
+			# TODO: hack, we're adjusting because we don't count the step anymore
+			numTurnedOn--
 			numTurnedOn
 
 		
