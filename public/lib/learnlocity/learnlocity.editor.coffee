@@ -2,8 +2,8 @@
 	mod = angular.module('learnlocity.editor', ['ui.ace', 'ui.bootstrap'])
 
 	mod.controller 'editorController', ($scope, $timeout, $window, $rootScope)->
+		$scope.stepVisible = true		
 		$scope.displays =
-			step:true
 			html:true
 			css:true
 			js:true
@@ -19,8 +19,6 @@
 			if $scope.displays.preview and $scope.update.previewBelow 
 				numTurnedOn--
 		
-			# TODO: hack, we're adjusting because we don't count the step anymore
-			numTurnedOn--
 			numTurnedOn
 
 		
@@ -31,8 +29,6 @@
 				'2':6
 				'3':4
 				'4':3
-				'5':3
-				'6':3
 			'col-md-' + sizesMap[numTurnedOn]
 
 
@@ -43,8 +39,6 @@
 				'2':6
 				'3':4
 				'4':3
-				'5':3
-				'6':3
 			if not $scope.update.previewBelow 
 				'col-md-' + sizesMap[numTurnedOn]
 			else
