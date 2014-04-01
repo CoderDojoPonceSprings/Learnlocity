@@ -29,8 +29,8 @@
 				'2':6
 				'3':4
 				'4':3
-				'5':2
-				'6':2
+				'5':3
+				'6':3
 			'col-md-' + sizesMap[numTurnedOn]
 
 
@@ -41,8 +41,8 @@
 				'2':6
 				'3':4
 				'4':3
-				'5':4
-				'6':2
+				'5':3
+				'6':3
 			if not $scope.update.previewBelow 
 				'col-md-' + sizesMap[numTurnedOn]
 			else
