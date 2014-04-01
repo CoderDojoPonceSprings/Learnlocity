@@ -1,12 +1,12 @@
 <div class='container-fluid'>
   <div class='row-fluid'>
-    <div class='col-md-12 instruction' id='step'>
+    <div class='col-md-12' id='step'>
       <div style='padding: 3px'>
           <strong>Mission Goal</strong> 
           <button type='button' class='btn btn-primary btn-sm' ng-click='stepVisible = !stepVisible'><i class='glyphicon glyphicon-eye-open'></i> <span ng-show='!stepVisible'>Show</span><span ng-show='stepVisible'>Hide</span>
           </button>
       </div>      
-      <div ng-show='stepVisible' ng-bind-html='mission.story'></div>
+      <div class='instruction' ng-show='stepVisible' ng-bind-html='mission.story'></div>
     </div>
   </div>
   <div class='row-fluid' style='text-align: center'>
