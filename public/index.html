@@ -82,6 +82,14 @@ ul.dropdown-menu-form {
     overflow-y: scroll;
     text-align: left;
 }
+
+.editorSection {
+ 	margin-top: 4px;
+ 	padding: 3px;
+ 	background: lightblue;
+ 	border: 1px solid darkgray;
+ 	border-bottom: none;
+}
     	</style>
 		<script src='lib/jquery/jquery-1.11.0.min.js'></script>	
 		<script src='//code.jquery.com/ui/1.10.4/jquery-ui.js'></script>
@@ -181,7 +189,7 @@ ul.dropdown-menu-form {
 										<tab-heading ng-click='loadPeer(mission, peer)'>
 											<img title='{{peer.userName}}' ng-src='{{peer.avatar_url}}' src='https://avatars.githubusercontent.com/u/7043781?s=18' alt='{{peer.userName}}' width='18' height='18' />
 										</tab-heading>
-										Player: {{peer.userName}}<br />
+										<strong>Player:</strong> {{peer.userName}}<br />
 										<section 
 											ng-init='code=peer.code;mission=mission'
 											ng-include='"partials/learnlocity.editor.editor.html"'

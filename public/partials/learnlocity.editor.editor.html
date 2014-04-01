@@ -1,61 +1,57 @@
 <div class='container-fluid'>
-  <div class='row-fluid'>
-    <div class='col-md-12' id='step'>
-      <div style='padding: 3px'>
-          <strong style='font-size:125%'>Mission Goal</strong> 
-          <button type='button' class='btn btn-primary btn-sm' ng-click='stepVisible = !stepVisible'><i class='glyphicon glyphicon-eye-open'></i> <span ng-show='!stepVisible'>Show</span><span ng-show='stepVisible'>Hide</span>
-          </button>
-      </div>      
-      <div class='instruction' ng-if='stepVisible' ng-bind-html='mission.story'></div>
-    </div>
-  </div>
-  <div class='row-fluid' style='text-align: center'>
-    <div style='background: beige; padding: 3px;'>
-      <span style='float: left'>
-        <strong style='font-size:125%'>Mission Controls</strong>
-        <button type='button' class='btn btn-primary btn-sm' ng-click='controlsVisible = !controlsVisible'><i class='glyphicon glyphicon-eye-open'></i> <span ng-show='!controlsVisible'>Show</span><span ng-show='controlsVisible'>Hide</span>
+  <div class='row-fluid' id='step'>
+    <div class='editorSection'>
+        <strong style='font-size:125%'>Mission Goal</strong> 
+        <button type='button' class='btn btn-default' ng-click='stepVisible = !stepVisible'><i class='glyphicon glyphicon-eye-open'></i> <span ng-show='!stepVisible'>Show</span><span ng-show='stepVisible'>Hide</span>
         </button>
-      </span>
-      <div class='btn-group' ng-if='controlsVisible'>
+    </div>      
+    <div class='instruction' ng-if='stepVisible' ng-bind-html='mission.story'></div>
+  </div>
+  <div class='row-fluid editorSection'>
+    <span>
+      <strong style='font-size:125%'>Mission Control</strong>
+      <button type='button' class='btn btn-default' ng-click='controlsVisible = !controlsVisible'><i class='glyphicon glyphicon-eye-open'></i> <span ng-show='!controlsVisible'>Show</span><span ng-show='controlsVisible'>Hide</span>
+      </button>
+    </span>
+    <div class='btn-group' ng-show='controlsVisible'>
+      <button type='button' 
+                class='btn btn-primary' 
+                ng-click='save()'><i class='glyphicon glyphicon-floppy-save'></i> Save</button>
+      <button type='button' 
+        class='btn btn-info'
+        ng-model='displays.html'
+        btn-checkbox><img src="http://www.w3.org/html/logo/downloads/HTML5_Badge_512.png" height="18" width="18" /> HTML</button>
+      <button type='button' 
+        class='btn btn-info'
+        ng-model='displays.css'
+        btn-checkbox><img src="http://blogs.msdn.com/cfs-filesystemfile.ashx/__key/communityserver-blogs-components-weblogfiles/00-00-01-38-13-metablogapi/2158.CSS3_2D00_Logo_5F00_6972ADFA.png" height="18" width="18" /> CSS</button>
+      <button type='button'
+        class='btn btn-info'
+        ng-model='displays.js'
+        btn-checkbox><img src="http://i.stack.imgur.com/Mmww2.png" height="18" width="18" /> JS</button>
+      <div class="btn-group">
+        <button 
+          type="button" 
+          class="btn btn-primary"
+          ng-click='previewToggle()'
+          ><i class='glyphicon glyphicon-eye-open' ng-show='!displays.preview'></i><i class='glyphicon glyphicon-eye-close' ng-show='displays.preview'></i> Results</button>
         <button type='button' 
-                  class='btn btn-primary' 
-                  ng-click='save()'><i class='glyphicon glyphicon-floppy-save'></i> Save</button>
-        <button type='button' 
-          class='btn btn-info'
-          ng-model='displays.html'
-          btn-checkbox><img src="http://www.w3.org/html/logo/downloads/HTML5_Badge_512.png" height="18" width="18" /> HTML</button>
-        <button type='button' 
-          class='btn btn-info'
-          ng-model='displays.css'
-          btn-checkbox><img src="http://blogs.msdn.com/cfs-filesystemfile.ashx/__key/communityserver-blogs-components-weblogfiles/00-00-01-38-13-metablogapi/2158.CSS3_2D00_Logo_5F00_6972ADFA.png" height="18" width="18" /> CSS</button>
-        <button type='button'
-          class='btn btn-info'
-          ng-model='displays.js'
-          btn-checkbox><img src="http://i.stack.imgur.com/Mmww2.png" height="18" width="18" /> JS</button>
-        <div class="btn-group">
-          <button 
-            type="button" 
-            class="btn btn-primary"
-            ng-click='previewToggle()'
-            ><i class='glyphicon glyphicon-eye-open' ng-show='!displays.preview'></i><i class='glyphicon glyphicon-eye-close' ng-show='displays.preview'></i> Results</button>
-          <button type='button' 
-            class='btn btn-primary'
-            ng-click='preview()'
-            ng-show='displays.preview && !update.whenTyping'
-            ><i class='glyphicon glyphicon-refresh'></i> Update Preview</button>
-          <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-            <span class="caret"></span>
-            <span class="sr-only">Toggle Dropdown</span>
-          </button>
-          <ul class="dropdown-menu dropdown-menu-form" role="menu">
-            <li>
-                <label class='checkbox'><input type='checkbox' ng-model='update.whenTyping' /> Auto-refresh?</label>
-            </li>
-            <li>
-                <label class='checkbox'><input type='checkbox' ng-model='update.previewBelow' /> Preview below?</label>
-            </li> 
-          </ul>
-        </div>
+          class='btn btn-primary'
+          ng-click='preview()'
+          ng-show='displays.preview && !update.whenTyping'
+          ><i class='glyphicon glyphicon-refresh'></i> Update Preview</button>
+        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+          <span class="caret"></span>
+          <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-form" role="menu">
+          <li>
+              <label class='checkbox'><input type='checkbox' ng-model='update.whenTyping' /> Auto-refresh?</label>
+          </li>
+          <li>
+              <label class='checkbox'><input type='checkbox' ng-model='update.previewBelow' /> Preview below?</label>
+          </li> 
+        </ul>
       </div>
     </div>
   </div>  
