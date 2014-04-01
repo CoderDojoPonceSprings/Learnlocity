@@ -77,7 +77,7 @@ iframe {
 }
 
 ul.dropdown-menu-form {
-    padding: 5px 10px 0;
+    padding: 5px 5px 0;
     max-height: 300px;
     overflow-y: scroll;
 }
@@ -445,7 +445,7 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
   <script type="text/coffeescript">
 $ ->
 	angular.bootstrap document, ['learnlocity', 'ui.bootstrap']
-	$(document).on 'click', 'dropdown-menu', (e) ->
+	$(document).on 'click', 'ul', (e) ->
     	e.stopPropagation()
 
   </script>
