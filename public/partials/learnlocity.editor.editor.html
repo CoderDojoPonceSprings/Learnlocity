@@ -9,47 +9,47 @@
     <div style='background: beige; padding: 3px;'>      
       <div class='btn-group'>
         <button type='button' 
-                  class='btn btn-success' 
+                  class='btn btn-primary' 
                   ng-click='save()'><i class='glyphicon glyphicon-floppy-save'></i> Save</button>
         <button type='button' 
-          class='btn btn-primary'
+          class='btn btn-info'
           ng-model='displays.html'
           btn-checkbox><img src="http://www.w3.org/html/logo/downloads/HTML5_Badge_512.png" height="18" width="18" /> HTML</button>
         <button type='button' 
-          class='btn btn-primary'
+          class='btn btn-info'
           ng-model='displays.css'
           btn-checkbox><img src="http://blogs.msdn.com/cfs-filesystemfile.ashx/__key/communityserver-blogs-components-weblogfiles/00-00-01-38-13-metablogapi/2158.CSS3_2D00_Logo_5F00_6972ADFA.png" height="18" width="18" /> CSS</button>
         <button type='button'
-          class='btn btn-primary'
+          class='btn btn-info'
           ng-model='displays.js'
           btn-checkbox><img src="http://i.stack.imgur.com/Mmww2.png" height="18" width="18" /> JS</button>
         <div class="btn-group">
           <button 
             type="button" 
-            class="btn btn-success"
+            class="btn btn-info"
             ng-click='preview()'
             ng-show='!displays.preview'
             ><i class='glyphicon glyphicon-eye-open'></i> Results</button>
           <button type='button' 
-            class='btn btn-primary'
+            class='btn btn-info'
             ng-click='previewHide()'
             ng-show='displays.preview'
             ><i class='glyphicon glyphicon-eye-close'></i> Results</button>        
           <button type='button' 
-            class='btn btn-primary'
+            class='btn btn-info'
             ng-click='preview()'
             ng-show='displays.preview && !update.whenTyping'
             ><i class='glyphicon glyphicon-refresh'></i> Update Preview</button>
-          <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+          <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
             <span class="caret"></span>
             <span class="sr-only">Toggle Dropdown</span>
           </button>
           <ul class="dropdown-menu dropdown-menu-form" role="menu">
             <li>
-                <label class='checkbox'><input type='checkbox' ng-model='update.whenTyping' /> Update when typing?</label>
+                <label class='checkbox'><input type='checkbox' ng-model='update.whenTyping' /> Auto-refresh?</label>
             </li>
             <li>
-                <label class='checkbox'><input type='checkbox' ng-model='update.previewBelow' /> Show preview below?</label>
+                <label class='checkbox'><input type='checkbox' ng-model='update.previewBelow' /> Preview below?</label>
             </li> 
           </ul>
         </div>
