@@ -89,8 +89,12 @@
 			editors["js"] = editor
 			configureEditor editor
 
+		$scope.previewToggle = ->
+			$scope.displays.preview = !scope.displays.preview
+			if $scope.displays.preview
+				$scope.preview()
+
 		$scope.preview = ->
-			$scope.displays.preview = true
 			script = document.createElement("script")
 			script.type = "text/javascript"	    
 			script.text = jsEditor.getSession().getValue()
@@ -120,10 +124,7 @@
 				doc = @contentWindow.document
 				doc.open()
 				doc.write "<html>" + html.html() + "</html>"
-				doc.close()
-		
-		$scope.previewHide = ->
-			$scope.displays.preview = false
+				doc.close()		
 
 		# TODO: this is a little bit hacktastic:
 		$scope.$watch 'editorsToLoadCount', ->
