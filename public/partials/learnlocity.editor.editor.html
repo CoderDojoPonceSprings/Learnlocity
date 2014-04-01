@@ -10,8 +10,12 @@
     </div>
   </div>
   <div class='row-fluid' style='text-align: center'>
-    <div style='background: beige; padding: 3px;'>      
-      <div class='btn-group'>
+    <div style='background: beige; padding: 3px;'>
+      <span style='float: left'>
+        <button type='button' class='btn btn-primary btn-sm' ng-click='controlsVisible = !controlsVisible'><i class='glyphicon glyphicon-eye-open'></i> <span ng-show='!controlsVisible'>Show</span><span ng-show='controlsVisible'>Hide</span>
+        </button>
+      </span>
+      <div class='btn-group' ng-if='controlsVisible'>
         <button type='button' 
                   class='btn btn-primary' 
                   ng-click='save()'><i class='glyphicon glyphicon-floppy-save'></i> Save</button>
@@ -54,7 +58,7 @@
       </div>
     </div>
   </div>  
-  <div class='row-fluid'>
+  <div class='row-fluid' ng-show='controlsVisible'>
     <div class='editor {{getEditorsClass()}}' ng-show='displays.html'>
       <div style='background: #F06428; color: black;'><strong>HTML</strong> <i class='glyphicon glyphicon-edit'></i></div>
       <div class='ace_wrapper'>        
