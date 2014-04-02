@@ -9,7 +9,7 @@
 			html: true
 			css: true
 			js: true
-			preview: false
+			preview: true
 
 		$scope.update = 
 			whenTyping: true
