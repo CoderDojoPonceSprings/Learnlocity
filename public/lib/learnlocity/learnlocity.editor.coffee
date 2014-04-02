@@ -2,7 +2,7 @@
 	mod = angular.module('learnlocity.editor', ['ui.ace', 'ui.bootstrap'])
 
 	mod.controller 'editorController', ($scope, $timeout, $window, $rootScope)->
-		$scope.questVisible = true
+		$scope.questVisible = false
 		$scope.stepVisible = true	
 		$scope.controlsVisible	= true
 		$scope.displays =
