@@ -106,80 +106,125 @@ ul.dropdown-menu-form {
 		<script src="/socket.io/socket.io.js"></script>
 	</head>
 	<body class='container-fluid center' ng-cloak ng-controller='tutorialController'>
-		<nav class="navbar navbar-default" role="navigation">
-		  <div class="container-fluid">
-		    <!-- Brand and toggle get grouped for better mobile display -->
-		    <div class="navbar-header">
-		      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-		        <span class="sr-only">Toggle navigation</span>
-		        <span class="icon-bar"></span>
-		        <span class="icon-bar"></span>
-		        <span class="icon-bar"></span>
-		      </button>
-		      <span class='navbar-brand'><i class='glyphicon glyphicon-signal'></i> <strong>Learnlocity</strong>: <em>build your brain velocity!</em></span>
-		    </div>
+		<snap-drawer>
+			<div class='container-fluid center fill' style='background: palegreen'>
+				<ul class="nav nav-pills nav-stacked" ng-controller='identityController'>
+					<li ng-show='!userLoggedIn'><a class='btn btn-primary' ng-click='signInWithGitHub()'><i class="fa fa-github-alt"></i> Sign In with GitHub</a></li>
+					<!--
+					<li ng-show='!userLoggedIn'><a class='btn btn-success' href="#" ng-click='showIdentifyUserDialog()'><strong>Log In or Register</strong>&nbsp;<i class='glyphicon glyphicon-user'></i></a></li> -->
+					<li ng-show='userLoggedIn'><a class='btn btn-success' style='background: darkblue' href="#"><img ng-src="{{avatar_url.src}}" height='18' width='18' />&nbsp;<strong>Welcome, {{userName}}!</strong></a></li>					
+				</ul>				
+				<h3 style='text-align:center'><i class='glyphicon glyphicon-flag'></i>&nbsp;Your Quest:</h3>
+				<div class='alert alert-warning' ng-if='stepsCode.length == 0'>You haven't selected a quest yet. Pick one from the right first!</div>
+				<div class='panel panel-primary' ng-if='stepsCode.length > 0'>
+					<div class='panel-heading'><h4>{{quest.title}}</h4></div>
+					<div class='panel-body'>						
+						<div style='text-align:center'><small><strong>{{questMissionsComplete}} of {{questMissionsTotal}} Missions completed</strong></small></div>
+						<progressbar animate="false" value="questPercentComplete()" type="success" style="text-align:center"><b style='padding-left:3px;padding-right:3px;'>{{questPercentComplete()}}%</b></progressbar>						
+						<tabset>
+							<tab heading="Brief">
+								<div style='padding-top: 5px'>{{quest.description}}
+								</div>
+							</tab>
+							<tab heading="Missions">
+								<div style='padding-top:5px'>
+									<accordion close-others="true">	
+										<accordion-group is-open='false' ng-repeat='mission in missions'>
+											<accordion-heading>
+										        <i class="pull-right glyphicon glyphicon-chevron-right"></i> {{mission.title}}
+										    </accordion-heading>
+										  	{{mission.description}}
+										  	<br />
+											<button class='btn btn-success btn-mini' ng-click='stepLoad(mission.href)'>Load Mission <i class='glyphicon glyphicon-play'></i></button>
+										</accordion-group>
+									</accordion>
+								</div>
+							</tab>
+						</tabset>
+					</div>
+				</div>
+			</div>			
+		</snap-drawer>
+		<div snap-content snap-options="{disable:left}">
+			<nav class="navbar navbar-default" role="navigation">
+			  <div class="container-fluid">
+			    <!-- Brand and toggle get grouped for better mobile display -->
+			    <div class="navbar-header">
+			      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+			        <span class="sr-only">Toggle navigation</span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			      </button>
+			      <span class='navbar-brand'><i class='glyphicon glyphicon-signal'></i> <strong>Learnlocity</strong>: <em>build your brain velocity!</em></span>
+			    </div>
 
-		    <!-- Collect the nav links, forms, and other content for toggling -->
-		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-		      <ul class="nav navbar-nav navbar-right nav-pills" ng-controller='identityController'>
-				<li ng-show='!userLoggedIn'><a style='background: green; color: white' ng-click='signInWithGitHub()' href="#"><i class="fa fa-github-alt"></i> Sign In with GitHub</a></li>
-				<li ng-show='userLoggedIn' style='background: darkblue;'><a style='color: white' href="#"><img ng-src="{{avatar_url.src}}" height='18' width='18' />&nbsp;<strong>Welcome, {{userName}}!</strong></a></li>								      	
-		      </ul>
-		    </div><!-- /.navbar-collapse -->
-		  </div><!-- /.container-fluid -->
-		</nav>
-	    <div class='container-fluid fill' id='mainPanel' style='background:white'>
-	    	<div class='row-fluid'>
-				<div class="jumbotron" ng-show='homeVisible'>
-					<h1>Welcome to Learnlocity!</h1>
-					<p>Take a quest with your friends to build your brain's learning velocity!</p>
-					<h2>Available Quests:</h2>
-					<div class='container-fluid'>
-						<div class="row-fluid">
-						  	<div class="col-sm-6 col-md-4" ng-repeat='quest in quests'>
-						    	<div class="thumbnail">
-						      		<div class="caption" style='text-align:center' ng-init='briefingVisible=false'>
-										<h3>{{quest.title}}</h3>
-										<img src="{{quest.img}}" alt="{{quest.title}}" />
-										<p style='margin-top:5px'>
-								      		<a href='#' role='button' class='btn btn-success' ng-click='questLoad(quest.href)'>
-								      			<i class='glyphicon glyphicon-flag'></i>&nbsp;Start Quest Missions</a><strong>&nbsp;or&nbsp;</strong><a class='btn btn-primary' href='#' role='button' ng-click='briefingVisible=!briefingVisible' ng-show='!briefingVisible'>
-								      		<i class='glyphicon glyphicon-eye-open'></i>&nbsp;See Quest Briefing</a>
-											<a class='btn btn-primary' href='#' role='button' ng-click='briefingVisible=!briefingVisible' ng-show='briefingVisible'>
-								      		<i class='glyphicon glyphicon-eye-close'></i>&nbsp;Hide Quest Briefing</a>									      		
-							      		</p>
-							      		<p style='text-align:left;' class='well well-small' ng-show='briefingVisible'>
-							      			{{quest.description}}
-							      			<br />
-											<a href='#' role='button' class='btn btn-success' ng-click='questLoad(quest.href)'>Let's Go!</a>
-										</p>    
-						      		</div>
-						    	</div>
-						  	</div>
+			    <!-- Collect the nav links, forms, and other content for toggling -->
+			    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			      <ul class="nav navbar-nav navbar-right" ng-controller='identityController'>
+					<li ng-show='!userLoggedIn'><a class='btn btn-primary' ng-click='signInWithGitHub()'><i class="fa fa-github-alt"></i> Sign In with GitHub</a></li>
+					<li ng-show='userLoggedIn'><a class='btn btn-success' style='background: darkblue' href="#"><img ng-src="{{avatar_url.src}}" height='18' width='18' />&nbsp;<strong>Welcome, {{userName}}!</strong></a></li>								      	
+			      </ul>
+			    </div><!-- /.navbar-collapse -->
+			  </div><!-- /.container-fluid -->
+			</nav>
+
+			<nav class="navbar navbar-default" role="navigation">
+			  <a href="#" class="navbar-brand" style='background: lightblue;' snap-toggle='left'><span ng-show='menuVisible'>&nbsp;</span><strong>Menu</strong>&nbsp;<i class='glyphicon glyphicon-transfer'></i></a><span class='navbar-brand'><i class='glyphicon glyphicon-signal'></i> <strong>Learnlocity</strong>: <em>build your brain velocity!</em></span>
+			</nav>		
+		    <div class='container-fluid fill' id='mainPanel' style='background:white'>
+		    	<div class='row-fluid'>
+					<div class="jumbotron" ng-show='homeVisible'>
+						<h1>Welcome to Learnlocity!</h1>
+						<p>Take a quest with your friends to build your brain's learning velocity!</p>
+						<h2>Available Quests:</h2>
+						<div class='container-fluid'>
+							<div class="row-fluid">
+							  	<div class="col-sm-6 col-md-4" ng-repeat='quest in quests'>
+							    	<div class="thumbnail">
+							      		<div class="caption" style='text-align:center' ng-init='briefingVisible=false'>
+											<h3>{{quest.title}}</h3>
+											<img src="{{quest.img}}" alt="{{quest.title}}" />
+											<p style='margin-top:5px'>
+									      		<a href='#' role='button' class='btn btn-success' ng-click='questLoad(quest.href)'>
+									      			<i class='glyphicon glyphicon-flag'></i>&nbsp;Start Quest Missions</a><strong>&nbsp;or&nbsp;</strong><a class='btn btn-primary' href='#' role='button' ng-click='briefingVisible=!briefingVisible' ng-show='!briefingVisible'>
+									      		<i class='glyphicon glyphicon-eye-open'></i>&nbsp;See Quest Briefing</a>
+												<a class='btn btn-primary' href='#' role='button' ng-click='briefingVisible=!briefingVisible' ng-show='briefingVisible'>
+									      		<i class='glyphicon glyphicon-eye-close'></i>&nbsp;Hide Quest Briefing</a>									      		
+								      		</p>
+								      		<p style='text-align:left;' class='well well-small' ng-show='briefingVisible'>
+								      			{{quest.description}}
+								      			<br />
+												<a href='#' role='button' class='btn btn-success' ng-click='questLoad(quest.href)'>Let's Go!</a>
+											</p>    
+							      		</div>
+							    	</div>
+							  	</div>
+							</div>
+						</div>
+					</div>
+					<div ng-show='!homeVisible'>
+						<div style='margin-bottom:4px;'>
+							<strong style='font-size:125%;'>Current Mission:</strong>&nbsp;{{mission.title}}&nbsp;
+							<section>
+								<tabset>
+									<tab ng-repeat='peer in mission.peers'>
+										<tab-heading ng-click='loadPeer(mission, peer)'>
+											<img title='{{peer.userName}}' ng-src='{{peer.avatar_url}}' src='https://avatars.githubusercontent.com/u/7043781?s=18' alt='{{peer.userName}}' width='18' height='18' />
+										</tab-heading>
+										<strong>Player:</strong> {{peer.userName}}<br />
+										<section 
+											ng-init='code=peer.code;mission=mission'
+											ng-include='"partials/learnlocity.editor.editor.html"'
+											ng-controller='editorController'></section>
+									</tab>
+								</tabset>
+							</section>
 						</div>
 					</div>
 				</div>
-				<div ng-show='!homeVisible'>
-					<div style='margin-bottom:4px;'>
-						<strong style='font-size:125%;'>Current Mission:</strong>&nbsp;{{mission.title}}&nbsp;
-						<section>
-							<tabset>
-								<tab ng-repeat='peer in mission.peers'>
-									<tab-heading ng-click='loadPeer(mission, peer)'>
-										<img title='{{peer.userName}}' ng-src='{{peer.avatar_url}}' src='https://avatars.githubusercontent.com/u/7043781?s=18' alt='{{peer.userName}}' width='18' height='18' />
-									</tab-heading>
-									<strong>Player:</strong> {{peer.userName}}<br />
-									<section 
-										ng-init='code=peer.code;mission=mission'
-										ng-include='"partials/learnlocity.editor.editor.html"'
-										ng-controller='editorController'></section>
-								</tab>
-							</tabset>
-						</section>
-					</div>
-				</div>
-			</div>
-		</div>	
+			</div>	
+		</div>
 	</body>
 	<script>
 var MISSIONUPDATE_INTERVAL = 5000;
