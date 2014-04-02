@@ -13,6 +13,7 @@
 body {
 	margin: 0;
 	padding: 0 !important;
+	overflow: scroll;
 }
 
 iframe {
@@ -90,6 +91,10 @@ ul.dropdown-menu-form {
  	border: 1px solid darkgray;
  	border-bottom: none;
 }
+
+.padding-left-none {
+	padding-left: 0 !important;
+}
     	</style>
 		<script src='lib/jquery/jquery-1.11.0.min.js'></script>	
 		<script src='//code.jquery.com/ui/1.10.4/jquery-ui.js'></script>
@@ -140,15 +145,15 @@ ul.dropdown-menu-form {
 						    	<div class="thumbnail">
 						      		<div class="caption" style='text-align:center' ng-init='briefingVisible=false'>
 										<h3>{{quest.title}}</h3>
-										<img src="{{quest.img}}" alt="{{quest.title}}" />
 										<p style='margin-top:5px'>
 								      		<a href='#' role='button' class='btn btn-success' ng-click='questLoad(quest.href)'>
 								      			<i class='glyphicon glyphicon-flag'></i>&nbsp;Start Quest Missions</a><strong>&nbsp;or&nbsp;</strong><a class='btn btn-primary' href='#' role='button' ng-click='briefingVisible=!briefingVisible' ng-show='!briefingVisible'>
 								      		<i class='glyphicon glyphicon-eye-open'></i>&nbsp;See Quest Briefing</a>
 											<a class='btn btn-primary' href='#' role='button' ng-click='briefingVisible=!briefingVisible' ng-show='briefingVisible'>
 								      		<i class='glyphicon glyphicon-eye-close'></i>&nbsp;Hide Quest Briefing</a>									      		
-							      		</p>
-							      		<p style='text-align:left;' class='well well-small' ng-show='briefingVisible'>
+							      		</p>										
+										<img src="{{quest.img}}" alt="{{quest.title}}" />
+							      		<p style='text-align:left;margin-top:5px' class='well well-small' ng-show='briefingVisible'>
 							      			{{quest.description}}
 							      			<br />
 											<a href='#' role='button' class='btn btn-success' ng-click='questLoad(quest.href)'>Let's Go!</a>
@@ -187,11 +192,11 @@ var MISSIONUPDATE_INTERVAL = 5000;
 var learnlocity = angular.module('learnlocity',['snap', 'learnlocity.identity', 'learnlocity.editor', 'ui.bootstrap']);
 
 learnlocity.controller('tutorialController', function($rootScope, $scope, $http, $sce, $interval) {
-	$scope.userLoggedIn = false;
-	$scope.homeVisible = true;
-	$scope.questMissionsComplete = 0;
-	$scope.questMissionsTotal = 0;
-	$scope.questPercentComplete = function() {
+	$rootScope.userLoggedIn = false;
+	$rootScope.homeVisible = true;
+	$rootScope.questMissionsComplete = 0;
+	$rootScope.questMissionsTotal = 0;
+	$rootScope.questPercentComplete = function() {
 		var pc = Math.floor(100 * ($scope.questMissionsComplete / $scope.questMissionsTotal));
 		return pc;
 	};
@@ -257,8 +262,8 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 			var quest = new DOMParser().parseFromString(data, "text/html");
 			var missionLinks = quest.querySelectorAll('nav>ul>li');			
 			var missions = [];
-			$scope.questMissionsComplete = 0;
-			$scope.questMissionsTotal = missionLinks.length;
+			$rootScope.questMissionsComplete = 0;
+			$rootScope.questMissionsTotal = missionLinks.length;
 			for(var i = 0; i < missionLinks.length; i++) {
 				var missionLink = missionLinks[i];
 				var href = missionLink.querySelectorAll('[href]')[0].attributes["href"].value;
@@ -277,7 +282,7 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 	};
 
 	$rootScope.stepLoad = function(missionHref) {
-		$scope.homeVisible = false;
+		$rootScope.homeVisible = false;
 
 		function missionLeave(missionLeaving) {
 			$scope.socket.emit("msg", {
@@ -288,8 +293,8 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 			});
 		}		
 
-		if (angular.isDefined($scope.mission)) {
-			missionLeave($scope.mission.href);
+		if (angular.isDefined($rootScope.mission)) {
+			missionLeave($rootScope.mission.href);
 		}
 
 		function missionJoin() {
@@ -316,7 +321,7 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 			mission.name = name;
 			mission.story = $sce.trustAsHtml(story);
 
-			$scope.mission = mission;
+			$rootScope.mission = mission;
 
 			// Listen for users online
 			if (angular.isDefined($scope.missionUpdate)) {
@@ -382,8 +387,8 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 			var user = gh.getUser();
 			user.show('', function(err, user) { 
 				$scope.$apply(function() {
-					$scope.userLoggedIn = true;
-					$scope.userName = user.login;
+					$rootScope.userLoggedIn = true;
+					$rootScope.userName = user.login;
 					$rootScope.gitHubUserName = user.login;
 					$rootScope.avatar_url.src = user.avatar_url + "s=18";
 				});

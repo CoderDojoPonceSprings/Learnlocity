@@ -2,15 +2,18 @@
 	mod = angular.module('learnlocity.editor', ['ui.ace', 'ui.bootstrap'])
 
 	mod.controller 'editorController', ($scope, $timeout, $window, $rootScope)->
+		$scope.questVisible = true
 		$scope.stepVisible = true	
 		$scope.controlsVisible	= true
 		$scope.displays =
-			html:true
-			css:true
-			js:true
-			preview:false
+			html: true
+			css: true
+			js: true
+			preview: false
 
-		$scope.update = { whenTyping : true, previewBelow: false }
+		$scope.update = 
+			whenTyping: true
+			previewBelow: false
 
 		getNumDisplaysVisible = ->
 			numTurnedOn = 0
@@ -25,23 +28,13 @@
 		
 		$scope.getEditorsClass = ->
 			numTurnedOn = getNumDisplaysVisible()
-			sizesMap = 
-				'1':12
-				'2':6
-				'3':4
-				'4':3
-			'col-md-' + sizesMap[numTurnedOn]
+			'col-md-' + (12 / numTurnedOn)
 
 
 		$scope.getPreviewClass = ->
 			numTurnedOn = getNumDisplaysVisible()
-			sizesMap =
-				'1':12
-				'2':6
-				'3':4
-				'4':3
 			if not $scope.update.previewBelow 
-				'col-md-' + sizesMap[numTurnedOn]
+				'col-md-' + (12 / numTurnedOn)
 			else
 				'col-md-12'
 
@@ -116,10 +109,6 @@
 			html.append body
 
 			userName = $scope.code.userName
-
-			console.log('The username for the preview is:')
-			console.log(userName)
-			console.log($('#' + userName)[0])
 
 			$("#" + userName).each ->
 				doc = @contentWindow.document
