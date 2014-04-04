@@ -92,6 +92,18 @@ ul.dropdown-menu-form {
  	border-bottom: none;
 }
 
+.team {
+ 	margin-top: 4px;
+ 	padding: 3px;
+ 	background: white;
+ 	border: 1px solid darkgray;
+ 	border-bottom: none;
+}
+
+.teamBackground {
+	background: white;
+}
+
 .padding-left-none {
 	padding-left: 0 !important;
 }
@@ -167,6 +179,11 @@ ul.dropdown-menu-form {
 				<div ng-show='!homeVisible'>
 					<div style='margin-bottom:4px;'>
 						<strong style='font-size:125%;'>Current Mission:</strong>&nbsp;{{mission.title}}&nbsp;
+						<section ng-if='mission.peers.length > 0'
+							ng-include='"partials/learnlocity.quest.html"'
+							ng-controller='questController'></section>
+						</section>
+<!--
 						<section>
 							<tabset>
 								<tab ng-repeat='peer in mission.peers'>
@@ -181,6 +198,7 @@ ul.dropdown-menu-form {
 								</tab>
 							</tabset>
 						</section>
+-->						
 					</div>
 				</div>
 			</div>
@@ -206,11 +224,6 @@ learnlocity.controller('tutorialController', function($rootScope, $scope, $http,
 		if ($rootScope.peersVisible) return 'span7';
 		return 'span12';
 	};
-	$rootScope.notMine = function(code) {
-		return function(item) {
-			return item.id != "__YOURS__";
-		};
-	};	
 
 	var questsByName = {};
 

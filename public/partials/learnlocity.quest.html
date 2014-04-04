@@ -1,0 +1,61 @@
+<div class='container-fluid'>
+  <div class='row editorSection'>
+    <div class='col-md-10 padding-left-none'>
+      <strong style='font-size:125%'>Selected Quest:</strong> {{quest.title}}&nbsp;<strong class='label label-primary'>{{questMissionsComplete}} of {{questMissionsTotal}} missions completed ({{questPercentComplete()}}%)</strong>
+    </div>
+    <div class='col-md-2'>
+      <div style='float:right'>        
+        <button type='button' class='btn btn-default btn-sm' ng-click='questVisible = !questVisible'><i class='glyphicon glyphicon-eye-open' ng-show='!questVisible'></i><i class='glyphicon glyphicon-eye-close' ng-show='questVisible'></i> <span ng-show='!questVisible'>Show Quest</span><span ng-show='questVisible'>Hide Quest</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class='row' ng-show='questVisible' style='padding: 5px; background: mediumspringgreen'>
+    {{quest.description}}
+    <h4>Missions:</h4>
+    <div style='padding-top:5px'>
+      <accordion close-others="true"> 
+        <accordion-group is-open='false' ng-repeat='mission in missions'>
+          <accordion-heading>
+                <i class="pull-right glyphicon glyphicon-chevron-right"></i> {{mission.title}}
+            </accordion-heading>
+            {{mission.description}}
+            <br />
+          <button class='btn btn-success btn-sm' ng-click='stepLoad(mission.href)'>Load Mission <i class='glyphicon glyphicon-play'></i></button>
+        </accordion-group>
+      </accordion>
+    </div>
+  </div>
+  <div class='row editorSection' id='step'>
+    <div class='col-md-11 padding-left-none'>
+        <strong style='font-size:125%'>Current Mission:</strong> {{mission.title}}
+    </div>      
+    <div class='col-md-1'>      
+      <div style='float:right'>
+        <button type='button' class='btn btn-default btn-sm' ng-click='stepVisible = !stepVisible'><i class='glyphicon glyphicon-eye-open' ng-show='!stepVisible'></i><i class='glyphicon glyphicon-eye-close' ng-show='stepVisible'></i> <span ng-show='!stepVisible'>Show Mission</span><span ng-show='stepVisible'>Hide Mission</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-12 instruction' ng-if='stepVisible' ng-bind-html='mission.story'></div>  
+  </div>
+  <div class='row team'>
+    <div class='col-md-12 padding-left-none'>
+      <strong style='font-size:125%'>Mission Team ({{mission.peers.length}})</strong>
+    </div>        
+  </div>
+  <div class='row teamBackground' ng-show='teamVisible'>
+    <tabset class='teamBackground'>
+      <tab ng-repeat='peer in mission.peers'>
+        <tab-heading ng-click='loadPeer(mission, peer)' style='background: seagreen;'>
+          <img title='{{peer.userName}}' ng-src='{{peer.avatar_url}}' src='https://avatars.githubusercontent.com/u/7043781?s=18' alt='{{peer.userName}}' width='18' height='18' />
+        </tab-heading>
+        <section 
+          ng-init='code=peer.code;mission=mission'
+          ng-include='"partials/learnlocity.editor.editor.html"'
+          ng-controller='editorController'></section>
+      </tab>
+    </tabset>
+  </div>
+</div>

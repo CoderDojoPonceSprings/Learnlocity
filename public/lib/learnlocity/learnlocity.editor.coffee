@@ -1,10 +1,13 @@
 (->
 	mod = angular.module('learnlocity.editor', ['ui.ace', 'ui.bootstrap'])
 
-	mod.controller 'editorController', ($scope, $timeout, $window, $rootScope)->
+	mod.controller 'questController', ($scope) ->
+		console.log('We started the quest')
 		$scope.questVisible = false
 		$scope.stepVisible = true	
-		$scope.controlsVisible	= true
+		$scope.teamVisible	= true
+
+	mod.controller 'editorController', ($scope, $timeout, $window, $rootScope) ->
 		$scope.displays =
 			html: true
 			css: true
@@ -24,7 +27,6 @@
 				numTurnedOn--
 		
 			numTurnedOn
-
 		
 		$scope.getEditorsClass = ->
 			numTurnedOn = getNumDisplaysVisible()
